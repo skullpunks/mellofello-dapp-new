@@ -1,0 +1,17 @@
+{
+  "CONTRACT_ADDRESS": "0x21caa5D07a84A60235138DFaA8027c67cF00ab47",
+  "SCAN_LINK": "https://rinkeby.etherscan.io/address/0x21caa5d07a84a60235138dfaa8027c67cf00ab47",
+  "NETWORK": {
+    "NAME": "Ethereum",
+    "SYMBOL": "ETH",
+    "ID": 4
+  },
+  "NFT_NAME": "Skullpunks-Og",
+  "SYMBOL": "SP-Og",
+  "MAX_SUPPLY": 9999,
+  "WEI_COST": 0,
+  "GAS_LIMIT": 285000,
+  "MARKETPLACE": "Opeansea",
+  "MARKETPLACE_LINK": "https://opensea.io/collection/skullpunks-og",
+  "SHOW_BACKGROUND": true
+}
