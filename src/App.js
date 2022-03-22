@@ -4,6 +4,7 @@ import { connect } from "./redux/blockchain/blockchainActions";
 import { fetchData } from "./redux/data/dataActions";
 import * as s from "./styles/globalStyles";
 import styled from "styled-components";
+import Web3 from "web3";
 
 const truncate = (input, len) =>
   input.length > len ? `${input.substring(0, len)}...` : input;
@@ -15,8 +16,10 @@ export const StyledButton = styled.button`
   background-color: var(--secondary);
   padding: 10px;
   font-weight: bold;
+  font-size: 25px;
   color: var(--secondary-text);
-  width: 100px;
+  width: 300px;
+  height: 50px;
   cursor: pointer;
   box-shadow: 0px 6px 0px -2px rgba(250, 250, 250, 0.3);
   -webkit-box-shadow: 0px 6px 0px -2px rgba(250, 250, 250, 0.3);
@@ -102,25 +105,34 @@ function App() {
   const [feedback, setFeedback] = useState(`Click mint to claim your NFT.`);
   const [mintAmount, setMintAmount] = useState(1);
   const [CONFIG, SET_CONFIG] = useState({
-    CONTRACT_ADDRESS: "0x21caa5D07a84A60235138DFaA8027c67cF00ab47",
-    SCAN_LINK: "https://rinkeby.etherscan.io/address/0x21caa5d07a84a60235138dfaa8027c67cf00ab47",
+    CONTRACT_ADDRESS: "0xC1c130f6E93F1809f617B28138eec0F594f8391B",
+    SCAN_LINK: "https://etherscan.io/address/0xc1c130f6e93f1809f617b28138eec0f594f8391b",
     NETWORK: {
       NAME: "ETHEREUM",
       SYMBOL: "ETH",
-      ID: 4,
+      ID: 1,
     },
     NFT_NAME: "Skullpunks-OG",
     SYMBOL: "SP-OG",
     MAX_SUPPLY: 9999,
     WEI_COST: 0,
     DISPLAY_COST: 0,
-    GAS_LIMIT: 28500,
+    GAS_LIMIT: 100000,
     MARKETPLACE: "OpenSea",
-    MARKETPLACE_LINK: "https://testnets.opensea.io/assets/0x21caa5d07a84a60235138dfaa8027c67cf00ab47/1",
+    MARKETPLACE_LINK: "https://opensea.io/assets/skullpunksog/1",
     SHOW_BACKGROUND: false,
   });
-
-  const claimNFTs = () => {
+   const calcgas = async (mintAmount) => {
+   const resGasMethod = await blockchain.smartContract.methods
+   .mint(mintAmount)
+   .estimateGas({ from: blockchain.account });
+   const latestBlock = await blockchain.web3.eth.getBlock('latest');
+   const blockGas = latestBlock.gasLimit; 
+   return blockGas 
+   };
+  const claimNFTs = async () => { 
+    let gaseth = await calcgas (mintAmount)
+    console.log(gaseth)
     let cost = CONFIG.WEI_COST;
     let gasLimit = CONFIG.GAS_LIMIT;
     let totalCostWei = String(cost * mintAmount);
@@ -132,7 +144,9 @@ function App() {
     blockchain.smartContract.methods
       .mint(mintAmount)
       .send({
-        gasLimit: String(totalGasLimit),
+     // gasLimit: gaseth,
+        maxPriorityFeePerGas: null,
+        maxFeePerGas: null,
         to: CONFIG.CONTRACT_ADDRESS,
         from: blockchain.account,
         value: totalCostWei,
@@ -210,7 +224,7 @@ function App() {
            </s.Container>
           <s.SpacerLarge />
           <s.Container 
-            flex={1}
+            flex={2}
             jc={"center"}
             ai={"center"}
             style={{
@@ -261,7 +275,7 @@ function App() {
             ) : (
               <>
                 <s.TextTitle
-                  style={{ textAlign: "center", color: "var(--accent-text)" }}
+                  style={{ textAlign: "center", color: "var(--accent-text)", fontSize: 35, }}
                 >
                   Claim 5 FREE Skullpunks-Og NFTs {CONFIG.DISPLAY_COST}{" "}
                 </s.TextTitle>
@@ -364,7 +378,7 @@ function App() {
                           getData();
                         }}
                       >
-                        {claimingNft ? "BUSY" : "Mint"}
+                        {claimingNft ? "BUSY" : "MINT"}
                       </StyledButton>
                     </s.Container>
                   </>
