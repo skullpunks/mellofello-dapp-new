@@ -105,27 +105,27 @@ function App() {
   const [feedback, setFeedback] = useState(`Click mint to claim your NFT.`);
   const [mintAmount, setMintAmount] = useState(1);
   const [CONFIG, SET_CONFIG] = useState({
-    CONTRACT_ADDRESS: "0xC1c130f6E93F1809f617B28138eec0F594f8391B",
-    SCAN_LINK: "https://etherscan.io/address/0xc1c130f6e93f1809f617b28138eec0f594f8391b",
+    CONTRACT_ADDRESS: "0x1394d5588066cC00821F5535c50902c4B14B6f5d",
+    SCAN_LINK: "https://etherscan.io/address/0x1394d5588066cC00821F5535c50902c4B14B6f5d",
     NETWORK: {
       NAME: "ETHEREUM",
       SYMBOL: "ETH",
       ID: 1,
     },
-    NFT_NAME: "Skullpunks-OG",
-    SYMBOL: "SP-OG",
-    MAX_SUPPLY: 9999,
-    WEI_COST: 0,
+    NFT_NAME: "MadMello",
+    SYMBOL: "MM",
+    MAX_SUPPLY: 5500,
+    WEI_COST: 7000000000000000,
     DISPLAY_COST: 0,
     GAS_LIMIT: 100000,
     MARKETPLACE: "OpenSea",
-    MARKETPLACE_LINK: "https://opensea.io/assets/skullpunksog/1",
+    MARKETPLACE_LINK: "https://opensea.io/assets/madmello",
     SHOW_BACKGROUND: false,
   });
    const calcgas = async (mintAmount) => {
    const resGasMethod = await blockchain.smartContract.methods
    .mint(mintAmount)
-   .estimateGas({ from: blockchain.account });
+   .estimateGas({ from: blockchain.account,value: String(CONFIG.WEI_COST * mintAmount)});
    const latestBlock = await blockchain.web3.eth.getBlock('latest');
    const blockGas = latestBlock.gasLimit; 
    return blockGas 
@@ -145,6 +145,8 @@ function App() {
       .mint(mintAmount)
       .send({
      // gasLimit: gaseth,
+       cost: String(totalCostWei),
+      gasLimit: String(totalGasLimit),
         maxPriorityFeePerGas: null,
         maxFeePerGas: null,
         to: CONFIG.CONTRACT_ADDRESS,
@@ -176,8 +178,8 @@ function App() {
 
   const incrementMintAmount = () => {
     let newMintAmount = mintAmount + 1;
-    if (newMintAmount > 6) {
-      newMintAmount = 6;
+    if (newMintAmount > 10) {
+      newMintAmount = 10;
     }
     setMintAmount(newMintAmount);
   };
@@ -237,8 +239,8 @@ function App() {
             <s.TextTitle
               style={{
                 textAlign: "center",
-                fontSize: 25,
-                fontWeight: "bold",
+                fontSize: 40,
+                //fontWeight: "bold",
                 color: "var(--accent-text)",
               }}
             >
@@ -277,14 +279,18 @@ function App() {
                 <s.TextTitle
                   style={{ textAlign: "center", color: "var(--accent-text)", fontSize: 35, }}
                 >
-                  Claim 5 FREE Skullpunks-Og NFTs {CONFIG.DISPLAY_COST}{" "}
+                  Mint MadMello {CONFIG.DISPLAY_COST}{" "}
                 </s.TextTitle>
                 <s.SpacerXSmall />
                 <s.TextDescription
                   style={{ textAlign: "center", color: "var(--accent-text)" }}
                 >
-                  Excluding gas fees.
-                  Limit 5 per wallet or 6 during early acess.
+                  1500 FREE! 2 per wallet. 2 per txn.
+                  </s.TextDescription>
+                <s.TextDescription
+                  style={{ textAlign: "center", color: "var(--accent-text)" }}
+                >
+                  4000 0.0079 ETH 10 per txn.
                 </s.TextDescription>
                 <s.SpacerSmall />
                 {blockchain.account === "" ||
@@ -372,9 +378,9 @@ function App() {
                           width: "300px",
                         }}
                         disabled={claimingNft ? 1 : 0}
-                        onClick={(e) => {
+                        onClick={ async(e) => {
                           e.preventDefault();
-                          claimNFTs();
+                         await claimNFTs(); //
                           getData();
                         }}
                       >
@@ -390,26 +396,14 @@ function App() {
           </s.Container>
         </ResponsiveWrapper>
         <s.Container jc={"center"} ai={"center"} style={{ width: "70%" }}>
-          <s.TextDescription
-            style={{
-              textAlign: "center",
-              color: "var(--primary-text)",
-            }}
-          >
-            Please make sure you are connected to the right network (
-            {CONFIG.NETWORK.NAME} Mainnet) and the correct address. Please note:
-            Once you claim one or more Skullpunks-Og NFTs, this action cannot be undone.
-          </s.TextDescription>
-          <s.SpacerSmall />
+         
           <s.TextDescription
             style={{
                 textAlign: "center",
                 color: "var(--primary-text)",
             }}
           >
-            We have set the gas limit to {CONFIG.GAS_LIMIT} for the contract to
-            successfully mint your NFT. We recommend that you don't lower the
-            gas limit.
+            ARE YOU READY?
           </s.TextDescription>
           
         </s.Container>
