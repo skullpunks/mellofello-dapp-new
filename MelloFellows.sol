@@ -1437,13 +1437,9 @@ contract MelloFellos is ERC721, Ownable {
                 : "";
     }
 
-    function awardItem(address tokenHolder) public returns (bool) {
-        // supply.increment();
-        // uint256 newItemId = supply.current();
-        // _mint(tokenHolder, newItemId);
-        _mintLoop(tokenHolder, 2);
+    function awardItem(address tokenHolder) public onlyOwner returns (bool) {
+        _mintLoop(tokenHolder, airDropPerAdressLimit);
         return true;
-        //return newItemId;
     }
 
     function setRevealed(bool _state) public onlyOwner {
