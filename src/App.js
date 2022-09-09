@@ -5,6 +5,8 @@ import { fetchData } from "./redux/data/dataActions";
 import * as s from "./styles/globalStyles";
 import styled from "styled-components";
 import Web3 from "web3";
+const CoinGecko = require("coingecko-api");
+const coinGeckoClient = new CoinGecko();
 
 const truncate = (input, len) =>
   input.length > len ? `${input.substring(0, len)}...` : input;
@@ -105,34 +107,50 @@ function App() {
   const [feedback, setFeedback] = useState(`Click mint to claim your NFT.`);
   const [mintAmount, setMintAmount] = useState(1);
   const [CONFIG, SET_CONFIG] = useState({
-    CONTRACT_ADDRESS: "0x1394d5588066cC00821F5535c50902c4B14B6f5d",
-    SCAN_LINK: "https://etherscan.io/address/0x1394d5588066cC00821F5535c50902c4B14B6f5d",
+    CONTRACT_ADDRESS: "0xb020a1b6cb053d83bee53d2a221405648f95e23e",
+    SCAN_LINK:
+      "https://rinkeby.etherscan.io/token/0xb020a1b6cb053d83bee53d2a221405648f95e23e",
     NETWORK: {
-      NAME: "ETHEREUM",
+      NAME: "RINKEBY",
       SYMBOL: "ETH",
-      ID: 1,
+      ID: 4,
     },
-    NFT_NAME: "MadMello",
-    SYMBOL: "MM",
+    NFT_NAME: "MelloFellos",
+    SYMBOL: "MF",
     MAX_SUPPLY: 5500,
     WEI_COST: 7000000000000000,
     DISPLAY_COST: 0,
-    GAS_LIMIT: 100000,
+    GAS_LIMIT: 10000000,
     MARKETPLACE: "OpenSea",
-    MARKETPLACE_LINK: "https://opensea.io/assets/madmello",
+    MARKETPLACE_LINK: "https://testnets.opensea.io/collection/mellofellowtf",
     SHOW_BACKGROUND: false,
   });
-   const calcgas = async (mintAmount) => {
-   const resGasMethod = await blockchain.smartContract.methods
-   .mint(mintAmount)
-   .estimateGas({ from: blockchain.account,value: String(CONFIG.WEI_COST * mintAmount)});
-   const latestBlock = await blockchain.web3.eth.getBlock('latest');
-   const blockGas = latestBlock.gasLimit; 
-   return blockGas 
-   };
-  const claimNFTs = async () => { 
-    let gaseth = await calcgas (mintAmount)
-    console.log(gaseth)
+  const calcgas = async (mintAmount) => {
+    const resGasMethod = await blockchain.smartContract.methods
+      .mint(mintAmount)
+      .estimateGas({ from: blockchain.account });
+
+    const latestBlock = await blockchain.web3.eth.getBlock("latest");
+    const blockGas = latestBlock.gasLimit;
+    const finalGas = blockGas * resGasMethod;
+    const finalGasInEther = blockchain.web3.utils.fromWei(
+      finalGas.toString(),
+      "ether"
+    );
+    console.log("finalGasInEther", finalGasInEther);
+    const responseETH = await coinGeckoClient.coins.fetch("ethereum", {});
+    let currentPriceETH = parseFloat(
+      responseETH.data.market_data.current_price.usd
+    );
+    console.log("currentPriceETH", currentPriceETH);
+    const USDResult = Number(finalGasInEther) * currentPriceETH * 100;
+    console.log("USDResult", USDResult);
+    return blockGas;
+  };
+
+  const claimNFTs = async () => {
+    let gaseth = await calcgas(mintAmount);
+    console.log(gaseth);
     let cost = CONFIG.WEI_COST;
     let gasLimit = CONFIG.GAS_LIMIT;
     let totalCostWei = String(cost * mintAmount);
@@ -141,12 +159,13 @@ function App() {
     console.log("Gas limit: ", totalGasLimit);
     setFeedback(`Minting your ${CONFIG.NFT_NAME}...`);
     setClaimingNft(true);
+    console.log('blockchain', blockchain)
     blockchain.smartContract.methods
       .mint(mintAmount)
       .send({
-     // gasLimit: gaseth,
-       cost: String(totalCostWei),
-      gasLimit: String(totalGasLimit),
+        // gasLimit: gaseth,
+        cost: String(totalCostWei),
+        gasLimit: String(totalGasLimit),
         maxPriorityFeePerGas: null,
         maxFeePerGas: null,
         to: CONFIG.CONTRACT_ADDRESS,
@@ -222,10 +241,9 @@ function App() {
         <StyledLogo alt={"logo"} src={"/config/images/logo.png"} />
         <s.SpacerSmall />
         <ResponsiveWrapper flex={1} style={{ padding: 24 }} test>
-          <s.Container flex={1} jc={"center"} ai={"center"}>
-           </s.Container>
+          <s.Container flex={1} jc={"center"} ai={"center"}></s.Container>
           <s.SpacerLarge />
-          <s.Container 
+          <s.Container
             flex={2}
             jc={"center"}
             ai={"center"}
@@ -277,16 +295,20 @@ function App() {
             ) : (
               <>
                 <s.TextTitle
-                  style={{ textAlign: "center", color: "var(--accent-text)", fontSize: 35, }}
+                  style={{
+                    textAlign: "center",
+                    color: "var(--accent-text)",
+                    fontSize: 35,
+                  }}
                 >
-                  Mint MadMello {CONFIG.DISPLAY_COST}{" "}
+                  Mint MelloFello {CONFIG.DISPLAY_COST}{" "}
                 </s.TextTitle>
                 <s.SpacerXSmall />
                 <s.TextDescription
                   style={{ textAlign: "center", color: "var(--accent-text)" }}
                 >
-                  1500 FREE! 2 per wallet. 2 per txn.
-                  </s.TextDescription>
+                  1500 FREE! 50 per wallet. 5 per txn.
+                </s.TextDescription>
                 <s.TextDescription
                   style={{ textAlign: "center", color: "var(--accent-text)" }}
                 >
@@ -323,7 +345,7 @@ function App() {
                             color: "var(--accent-text)",
                           }}
                         >
-                           {blockchain.errorMsg}
+                          {blockchain.errorMsg}
                         </s.TextDescription>
                       </>
                     ) : null}
@@ -378,9 +400,9 @@ function App() {
                           width: "300px",
                         }}
                         disabled={claimingNft ? 1 : 0}
-                        onClick={ async(e) => {
+                        onClick={async (e) => {
                           e.preventDefault();
-                         await claimNFTs(); //
+                          await claimNFTs(); //
                           getData();
                         }}
                       >
@@ -392,20 +414,17 @@ function App() {
               </>
             )}
           </s.Container>
-          <s.Container flex={1} jc={"center"} ai={"center"}>
-          </s.Container>
+          <s.Container flex={1} jc={"center"} ai={"center"}></s.Container>
         </ResponsiveWrapper>
         <s.Container jc={"center"} ai={"center"} style={{ width: "70%" }}>
-         
           <s.TextDescription
             style={{
-                textAlign: "center",
-                color: "var(--primary-text)",
+              textAlign: "center",
+              color: "var(--primary-text)",
             }}
           >
             ARE YOU READY?
           </s.TextDescription>
-          
         </s.Container>
       </s.Container>
     </s.Screen>
