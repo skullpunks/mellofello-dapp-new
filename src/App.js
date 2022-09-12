@@ -312,7 +312,7 @@ function App() {
                 <s.TextDescription
                   style={{ textAlign: "center", color: "var(--accent-text)" }}
                 >
-                  4000 0.0079 ETH 10 per txn.
+                  3500 0.0079 ETH 10 per txn.
                 </s.TextDescription>
                 <s.SpacerSmall />
                 {blockchain.account === "" ||
