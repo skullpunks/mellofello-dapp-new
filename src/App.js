@@ -236,10 +236,21 @@ function App() {
         style={{ padding: 24, backgroundColor: "var(--primary)" }}
         image={CONFIG.SHOW_BACKGROUND ? "/config/images/bg.png" : null}
       >
+       
         <s.SpacerLarge />
         <s.SpacerLarge />
         <StyledLogo alt={"logo"} src={"/config/images/logo.png"} />
         <s.SpacerSmall />
+        <s.TextTitle
+         style={{
+          textAlign: "center",
+          fontSize: 40,
+          fontStyle: "Kaushan Script",
+          //fontWeight: "bold",
+          color: "var(--accent-text)",
+        }}> 
+        Mint Date: 14th September 5 PM PST
+        </s.TextTitle>
         <ResponsiveWrapper flex={1} style={{ padding: 24 }} test>
           <s.Container flex={1} jc={"center"} ai={"center"}></s.Container>
           <s.SpacerLarge />
