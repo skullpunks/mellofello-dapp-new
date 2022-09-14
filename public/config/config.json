@@ -1,17 +1,17 @@
 {
-  "CONTRACT_ADDRESS": "0x6D2489E4D1c4E5161c339DA0bD7e244A077159f0",
-  "SCAN_LINK": "https://rinkeby.etherscan.io/token/0x6D2489E4D1c4E5161c339DA0bD7e244A077159f0",
+  "CONTRACT_ADDRESS": "0x63b0B8f71C839F7c9B9720A3eA3fD5DaE8732dF6",
+  "SCAN_LINK": "https://etherscan.io/token/0x63b0B8f71C839F7c9B9720A3eA3fD5DaE8732dF6",
   "NETWORK": {
-    "NAME": "RINKEBY",
+    "NAME": "ETHEREUM",
     "SYMBOL": "ETH",
-    "ID": 4
+    "ID": 1
   },
   "NFT_NAME": "MelloFellos",
   "SYMBOL": "MF",
   "MAX_SUPPLY": 5000,
   "WEI_COST": 790000000000000,
-  "GAS_LIMIT": 10000000,
+  "GAS_LIMIT": 300000,
   "MARKETPLACE": "Opeansea",
-  "MARKETPLACE_LINK": "https://testnets.opensea.io/collection/mellofellowtf",
+  "MARKETPLACE_LINK": "https://opensea.io/collection/mellofellowtf",
   "SHOW_BACKGROUND": true
 }

@@ -107,13 +107,13 @@ function App() {
   const [feedback, setFeedback] = useState(`Click mint to claim your NFT.`);
   const [mintAmount, setMintAmount] = useState(1);
   const [CONFIG, SET_CONFIG] = useState({
-    CONTRACT_ADDRESS: "0x6D2489E4D1c4E5161c339DA0bD7e244A077159f0",
+    CONTRACT_ADDRESS: "0x63b0B8f71C839F7c9B9720A3eA3fD5DaE8732dF6",
     SCAN_LINK:
-      "https://rinkeby.etherscan.io/token/0x6D2489E4D1c4E5161c339DA0bD7e244A077159f0",
+      "https://etherscan.io/token/0x63b0B8f71C839F7c9B9720A3eA3fD5DaE8732dF6",
     NETWORK: {
-      NAME: "RINKEBY",
+      NAME: "ETHEREUM",
       SYMBOL: "ETH",
-      ID: 4,
+      ID: 1,
     },
     NFT_NAME: "MelloFellos",
     SYMBOL: "MF",
@@ -122,7 +122,7 @@ function App() {
     DISPLAY_COST: 0.0079,
     GAS_LIMIT: 10000000,
     MARKETPLACE: "OpenSea",
-    MARKETPLACE_LINK: "https://testnets.opensea.io/collection/mellofellowtf",
+    MARKETPLACE_LINK: "https://opensea.io/collection/mellofellowtf",
     SHOW_BACKGROUND: false,
   });
   const calcgas = async (mintAmount) => {
@@ -150,26 +150,25 @@ function App() {
 
   const claimNFTs = async () => {
     //let gaseth = await calcgas(mintAmount);
-   // console.log(gaseth);
+    // console.log(gaseth);
     let cost = CONFIG.WEI_COST;
-    console.log('cost', CONFIG.WEI_COST)
+    console.log("cost", CONFIG.WEI_COST);
     let gasLimit = CONFIG.GAS_LIMIT;
     let totalCostWei = String(cost * mintAmount);
-    let totalGasLimit = String(gasLimit * mintAmount);
+    let totalGasLimit = String(gasLimit);
     console.log("Cost: ", totalCostWei);
     console.log("Gas limit: ", totalGasLimit);
     setFeedback(`Minting your ${CONFIG.NFT_NAME}...`);
     setClaimingNft(true);
-    console.log('blockchain', blockchain)
-    console.log('mintAmount', mintAmount)
-    console.log('totalCostWei', totalCostWei)
+    console.log("blockchain", blockchain);
+    console.log("mintAmount", mintAmount);
+    console.log("totalCostWei", totalCostWei);
 
-    
     blockchain.smartContract.methods
       .mint(mintAmount)
       .send({
         // gasLimit: gaseth,
-        cost: String(totalCostWei),
+        //cost: String(totalCostWei),
         gasLimit: String(totalGasLimit),
         maxPriorityFeePerGas: null,
         maxFeePerGas: null,
@@ -190,7 +189,6 @@ function App() {
         setClaimingNft(false);
         dispatch(fetchData(blockchain.account));
       });
-      
   };
 
   const decrementMintAmount = () => {
@@ -242,21 +240,11 @@ function App() {
         style={{ padding: 24, backgroundColor: "var(--primary)" }}
         image={CONFIG.SHOW_BACKGROUND ? "/config/images/bg.png" : null}
       >
-       
         <s.SpacerLarge />
         <s.SpacerLarge />
-        <StyledLogo alt={"logo"} src={"/config/images/logo.png"} />
+        
         <s.SpacerSmall />
-        <s.TextTitle
-         style={{
-          textAlign: "center",
-          fontSize: 40,
-          fontStyle: "Kaushan Script",
-          //fontWeight: "bold",
-          color: "var(--accent-text)",
-        }}> 
-        Mint Date: 14th September 5 PM PST
-        </s.TextTitle>
+
         <ResponsiveWrapper flex={1} style={{ padding: 24 }} test>
           <s.Container flex={1} jc={"center"} ai={"center"}></s.Container>
           <s.SpacerLarge />
@@ -269,8 +257,32 @@ function App() {
               padding: 24,
               borderRadius: 24,
               boxShadow: "0px 5px 11px 2px rgba(0,0,0,0.7)",
+              width: 80,
+              width: 33.333,
             }}
           >
+            <s.Container2
+            flex={2}
+            jc={"center"}
+            ai={"center"}
+            style={{
+              backgroundColor: "black",
+              boxShadow: "0px 5px 11px 2px rgba(0,0,0,0.7)",
+            }}
+          >
+            <StyledLogo alt={"logo"} src={"/config/images/logo.png"} />
+            <s.TextTitle
+              style={{
+                textAlign: "center",
+                fontSize: 40,
+                fontStyle: "Kaushan Script",
+                //fontWeight: "bold",
+                color: "var(--accent-text)",
+              }}
+            >
+              Mint Date: 14th September 5 PM PST
+            </s.TextTitle>
+            </s.Container2>
             <s.TextTitle
               style={{
                 textAlign: "center",
