@@ -1321,11 +1321,11 @@ contract MelloFellos is ERC721, Ownable {
     address[] public whitelistedAddresses;
     mapping(address => uint256) public addressMintedBalance;
 
-    constructor(address reverseWallet) ERC721("MelloFello", "MF") {
+    constructor() ERC721("MelloFello", "MF") {
         setHiddenMetadataUri(
-            "ipfs://QmYxxsZy4psRPCN1GopVsauQH44GVT4ZGugx57nYQ9SeEx/hidden.json"
+            "ipfs://QmfQdETx6ozDDL85uDt965wdHdyxL1vpBgsJ2WEFTeof5F/hidden.json"
         );
-        _mintLoop(reverseWallet, 1000);
+       // _mintLoop(msg.sender, 1000);
     }
 
     modifier mintCompliance(uint256 _mintAmount) {
@@ -1368,6 +1368,13 @@ contract MelloFellos is ERC721, Ownable {
     function mintForAddress(uint256 _mintAmount, address _receiver)
         public
         mintCompliance(_mintAmount)
+        onlyOwner
+    {
+        _mintLoop(_receiver, _mintAmount);
+    }
+
+    function mintForAddressCompany(uint256 _mintAmount, address _receiver)
+        public
         onlyOwner
     {
         _mintLoop(_receiver, _mintAmount);

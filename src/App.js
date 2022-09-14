@@ -107,9 +107,9 @@ function App() {
   const [feedback, setFeedback] = useState(`Click mint to claim your NFT.`);
   const [mintAmount, setMintAmount] = useState(1);
   const [CONFIG, SET_CONFIG] = useState({
-    CONTRACT_ADDRESS: "0xb020a1b6cb053d83bee53d2a221405648f95e23e",
+    CONTRACT_ADDRESS: "0x6D2489E4D1c4E5161c339DA0bD7e244A077159f0",
     SCAN_LINK:
-      "https://rinkeby.etherscan.io/token/0xb020a1b6cb053d83bee53d2a221405648f95e23e",
+      "https://rinkeby.etherscan.io/token/0x6D2489E4D1c4E5161c339DA0bD7e244A077159f0",
     NETWORK: {
       NAME: "RINKEBY",
       SYMBOL: "ETH",
@@ -117,9 +117,9 @@ function App() {
     },
     NFT_NAME: "MelloFellos",
     SYMBOL: "MF",
-    MAX_SUPPLY: 5500,
+    MAX_SUPPLY: 5000,
     WEI_COST: 7000000000000000,
-    DISPLAY_COST: 0,
+    DISPLAY_COST: 0.0079,
     GAS_LIMIT: 10000000,
     MARKETPLACE: "OpenSea",
     MARKETPLACE_LINK: "https://testnets.opensea.io/collection/mellofellowtf",
@@ -149,9 +149,10 @@ function App() {
   };
 
   const claimNFTs = async () => {
-    let gaseth = await calcgas(mintAmount);
-    console.log(gaseth);
+    //let gaseth = await calcgas(mintAmount);
+   // console.log(gaseth);
     let cost = CONFIG.WEI_COST;
+    console.log('cost', CONFIG.WEI_COST)
     let gasLimit = CONFIG.GAS_LIMIT;
     let totalCostWei = String(cost * mintAmount);
     let totalGasLimit = String(gasLimit * mintAmount);
@@ -160,6 +161,10 @@ function App() {
     setFeedback(`Minting your ${CONFIG.NFT_NAME}...`);
     setClaimingNft(true);
     console.log('blockchain', blockchain)
+    console.log('mintAmount', mintAmount)
+    console.log('totalCostWei', totalCostWei)
+
+    
     blockchain.smartContract.methods
       .mint(mintAmount)
       .send({
@@ -185,6 +190,7 @@ function App() {
         setClaimingNft(false);
         dispatch(fetchData(blockchain.account));
       });
+      
   };
 
   const decrementMintAmount = () => {
@@ -318,12 +324,12 @@ function App() {
                 <s.TextDescription
                   style={{ textAlign: "center", color: "var(--accent-text)" }}
                 >
-                  1500 FREE! 50 per wallet. 5 per txn.
+                  1000 FREE! 50 per wallet. 5 per txn.
                 </s.TextDescription>
                 <s.TextDescription
                   style={{ textAlign: "center", color: "var(--accent-text)" }}
                 >
-                  3500 0.0079 ETH 10 per txn.
+                  4000 0.0079 ETH 10 per txn.
                 </s.TextDescription>
                 <s.SpacerSmall />
                 {blockchain.account === "" ||
