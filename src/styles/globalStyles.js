@@ -58,6 +58,7 @@ export const Container2 = styled.div`
   align-items: ${({ ai }) => (ai ? ai : "flex-start")};
   background-color: ${({ test }) => (test ? "black" : "none")};
   width: 100%;
+  height: 40%;
   background-image: ${({ image }) => (image ? `url(${image})` : "none")};
   background-size: cover;
   background-position: center;

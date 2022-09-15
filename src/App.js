@@ -262,19 +262,22 @@ function App() {
             }}
           >
             <s.Container2
-            flex={2}
+            flex={3}
             jc={"center"}
             ai={"center"}
             style={{
               backgroundColor: "black",
               boxShadow: "0px 5px 11px 2px rgba(0,0,0,0.7)",
+              borderRadius: 24,
+              height: 100,
             }}
           >
+            
             <StyledLogo alt={"logo"} src={"/config/images/logo.png"} />
             <s.TextTitle
               style={{
                 textAlign: "center",
-                fontSize: 40,
+                fontSize: 25,
                 fontStyle: "Kaushan Script",
                 //fontWeight: "bold",
                 color: "var(--accent-text)",
@@ -283,6 +286,13 @@ function App() {
               Mint Date: 14th September 5 PM PST
             </s.TextTitle>
             </s.Container2>
+
+            <br>
+            </br>
+            <br>
+            </br>
+            <br>
+            </br>
             <s.TextTitle
               style={{
                 textAlign: "center",
