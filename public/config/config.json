@@ -9,7 +9,7 @@
   "NFT_NAME": "MelloFellos",
   "SYMBOL": "MF",
   "MAX_SUPPLY": 5000,
-  "WEI_COST": 790000000000000,
+  "WEI_COST": 0, 
   "GAS_LIMIT": 300000,
   "MARKETPLACE": "Opeansea",
   "MARKETPLACE_LINK": "https://opensea.io/collection/mellofellowtf",

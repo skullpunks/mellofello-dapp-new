@@ -118,7 +118,7 @@ function App() {
     NFT_NAME: "MelloFellos",
     SYMBOL: "MF",
     MAX_SUPPLY: 5000,
-    WEI_COST: 7000000000000000,
+    WEI_COST: 0, //7000000000000000,
     DISPLAY_COST: 0.0079,
     GAS_LIMIT: 10000000,
     MARKETPLACE: "OpenSea",
