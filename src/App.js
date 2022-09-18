@@ -1211,12 +1211,7 @@ function App() {
                 <s.TextDescription
                   style={{ textAlign: "center", color: "var(--accent-text)" }}
                 >
-                  1000 FREE! 50 per wallet. 5 per txn.
-                </s.TextDescription>
-                <s.TextDescription
-                  style={{ textAlign: "center", color: "var(--accent-text)" }}
-                >
-                  4000 0.0079 ETH 10 per txn.
+                  ALL 5000 FREE! 50 per wallet. 5 per txn.
                 </s.TextDescription>
                 <s.SpacerSmall />
                 {blockchain.account === "" ||
