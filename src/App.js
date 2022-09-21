@@ -103,6 +103,8 @@ function App() {
   const blockchain = useSelector((state) => state.blockchain);
   const data = useSelector((state) => state.data);
   const [totalSupply, setTotalSupply] = useState(0);
+  const [nftPerWallet, setNftPerWallet] = useState(0);
+  const [nftPerTx, setnftPerTx] = useState(0);
   const [claimingNft, setClaimingNft] = useState(false);
   const [feedback, setFeedback] = useState(`Click mint to claim your NFT.`);
   const [mintAmount, setMintAmount] = useState(1);
@@ -1090,6 +1092,10 @@ function App() {
     );
     let coolNumber = await pContract.methods.totalSupply().call();
     setTotalSupply(coolNumber);
+    let nftsPerWallet = await pContract.methods.nftPerAddressLimit().call();
+    setNftPerWallet(nftsPerWallet);
+    let nftsPerTx = await pContract.methods.maxMintAmountPerTx().call();
+    setnftPerTx(nftsPerTx);
     getConfig();
   }, []);
 
@@ -1211,7 +1217,7 @@ function App() {
                 <s.TextDescription
                   style={{ textAlign: "center", color: "var(--accent-text)" }}
                 >
-                  ALL 5000 FREE! 50 per wallet. 5 per txn.
+                  ALL 5000 FREE! 250 per wallet. 5 per txn.
                 </s.TextDescription>
                 <s.SpacerSmall />
                 {blockchain.account === "" ||
