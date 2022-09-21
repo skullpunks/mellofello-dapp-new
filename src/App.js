@@ -1057,8 +1057,8 @@ function App() {
 
   const incrementMintAmount = () => {
     let newMintAmount = mintAmount + 1;
-    if (newMintAmount > 10) {
-      newMintAmount = 10;
+    if (newMintAmount > 5) {
+      newMintAmount = 5;
     }
     setMintAmount(newMintAmount);
   };
@@ -1092,10 +1092,6 @@ function App() {
     );
     let coolNumber = await pContract.methods.totalSupply().call();
     setTotalSupply(coolNumber);
-    let nftsPerWallet = await pContract.methods.nftPerAddressLimit().call();
-    setNftPerWallet(nftsPerWallet);
-    let nftsPerTx = await pContract.methods.maxMintAmountPerTx().call();
-    setnftPerTx(nftsPerTx);
     getConfig();
   }, []);
 
@@ -1217,7 +1213,7 @@ function App() {
                 <s.TextDescription
                   style={{ textAlign: "center", color: "var(--accent-text)" }}
                 >
-                  ALL 5000 FREE! 250 per wallet. 5 per txn.
+                  ALL 5000 FREE! 200 per wallet. 5 per txn.
                 </s.TextDescription>
                 <s.SpacerSmall />
                 {blockchain.account === "" ||
